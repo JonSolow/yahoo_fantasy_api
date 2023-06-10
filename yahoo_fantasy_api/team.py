@@ -55,17 +55,17 @@ class Team:
         :type day: :class: datetime.date
         :return: Array of players.  Each entry is a dict with the following
            fields: player_id, name, position_type, eligible_positions,
-           selected_position
+           selected_position, status, is_keeper
 
         >>> tm.roster(3)
         [{'player_id': 8578, 'name': 'John Doe', 'position_type': 'B',
          'eligible_positions': ['C','1B'], 'selected_position': 'C',
-         'status': ''},
+         'status': '', 'is_keeper': False},
          {'player_id': 8967, 'name': 'Joe Baseball', 'position_type': 'B',
          'eligible_positions': ['SS'], 'selected_position': 'SS',
-         'status': 'DTD'},
+         'status': 'DTD', 'is_keeper': False},
          {'player_id': 9961, 'name': 'Ed Reliever', 'position_type': 'P',
-         'eligible_positions': ['RP'], 'status': ''}]
+         'eligible_positions': ['RP'], 'status': '', 'is_keeper': False}]
         """
         raw = self.yhandler.get_roster_raw(self.team_key, week=week, day=day)
         t = objectpath.Tree(raw)
@@ -98,10 +98,10 @@ class Team:
                 # we don't care about by looking at the type; bool means it is
                 # for keeper info.
                 if isinstance(plyr["status"], bool):
+                    plyr["is_keeper"] = plyr["status"]
                     plyr["status"] = ""
                 else:
-                    # Burn the next field as its the keeper info we don't care about
-                    next(it)
+                    plyr["is_keeper"] = next(it)
                 plyr["position_type"] = next(it)["position_type"]
                 plyr["eligible_positions"] = _compact_eligible_pos(next(it))
                 plyr["selected_position"] = _compact_selected_pos(next(it))
