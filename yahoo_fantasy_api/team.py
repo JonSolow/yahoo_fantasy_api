@@ -101,7 +101,7 @@ class Team:
                     plyr["is_keeper"] = plyr["status"]
                     plyr["status"] = ""
                 else:
-                    plyr["is_keeper"] = next(it)
+                    plyr["is_keeper"] = next(it)["status"]
                 plyr["position_type"] = next(it)["position_type"]
                 plyr["eligible_positions"] = _compact_eligible_pos(next(it))
                 plyr["selected_position"] = _compact_selected_pos(next(it))
