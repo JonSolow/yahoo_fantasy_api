@@ -71,7 +71,7 @@ class Team:
         t = objectpath.Tree(raw)
         it = t.execute('''
                         $..(player_id,full,position_type,eligible_positions,
-                            selected_position,status)''')
+                            selected_position,status,headshot)''')
 
         def _compact_selected_pos(j):
             return j["selected_position"][1]["position"]
@@ -105,6 +105,7 @@ class Team:
                 plyr["position_type"] = next(it)["position_type"]
                 plyr["eligible_positions"] = _compact_eligible_pos(next(it))
                 plyr["selected_position"] = _compact_selected_pos(next(it))
+                plyr["headshot_url"] = next(it)["url"]
 
                 roster.append(plyr)
         except StopIteration:
