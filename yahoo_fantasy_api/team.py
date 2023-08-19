@@ -70,8 +70,8 @@ class Team:
         raw = self.yhandler.get_roster_raw(self.team_key, week=week, day=day)
         t = objectpath.Tree(raw)
         it = t.execute('''
-                        $..(player_id,full,position_type,eligible_positions,
-                            selected_position,status,headshot)''')
+                        $..(player_id,full,headshot,position_type,
+                            eligible_positions,selected_position,status)''')
 
         def _compact_selected_pos(j):
             return j["selected_position"][1]["position"]
@@ -102,10 +102,10 @@ class Team:
                     plyr["status"] = ""
                 else:
                     plyr["is_keeper"] = next(it)["status"]
+                plyr["headshot_url"] = next(it)["url"]
                 plyr["position_type"] = next(it)["position_type"]
                 plyr["eligible_positions"] = _compact_eligible_pos(next(it))
                 plyr["selected_position"] = _compact_selected_pos(next(it))
-                plyr["headshot_url"] = next(it)["url"]
 
                 roster.append(plyr)
         except StopIteration:
