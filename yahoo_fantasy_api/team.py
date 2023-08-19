@@ -87,7 +87,7 @@ class Team:
         try:
             while True:
                 next_attr_map = next(it)
-                attr_key = next_attr_map.keys()[0]
+                attr_key = list(next_attr_map.keys())[0]
                 match attr_key:
                     case "player_id":
                         plyr[attr_key] = int(next_attr_map[attr_key])
